@@ -1,0 +1,87 @@
+﻿@page "/"
+@inherits ForexBase
+<div class="jumbotron-fluid">
+    <h1 class="display-8">Foreign Currency Exchange Converter</h1>
+    </div>
+
+<EditForm Model="Currency" OnSubmit="ConvertCurrencyValue" class="card card-body bg-light mt-3 shadow" style="width:100%; border:none">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>
+
+        <span class="badge badge-pill badge-primary" style="margin-bottom:10px;"> From Currency </span>
+        <div class="form-control form-control-lg text-center">
+
+            <InputSelect id="fromCur" @bind-Value="@Currency.FromCur" style="width:100%; border:none; box-shadow:none;outline-color:#fff;border-color:#fff">
+
+                @foreach (var c in curz)
+                {
+                    <option value="@c.Code" class="btn-primary"> @c.Code - @c.Description</option>
+                    
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <span class="oi oi-arrow-circle-right" aria-hidden="true"></span>
+        <span class="badge badge-pill badge-primary " style="margin-bottom:10px;">  To Currency </span>
+
+        <div class="form-control form-control-lg text-center">
+            <InputSelect id="toCur" @bind-Value="@Currency.ToCur" style="width:100%; border:none; box-shadow:none;outline-color:#fff;border-color:#fff">
+
+                @foreach (var c in curz)
+                {
+                    <option value="@c.Code" class="btn-primary"> @c.Code - @c.Description</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <br />
+
+    @**@
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-success btn-lg" disabled="@(!string.IsNullOrEmpty(Currency.FromCur) && !string.IsNullOrEmpty(Currency.ToCur) &&
+                            Currency.FromCur!="- CHOOSE CURRENCY" && Currency.ToCur != "- CHOOSE CURRENCY" ? false : true)">
+            Convert
+        </button>
+    </div>
+
+
+    @if (ConvertedCurrency.ConvertedValue != -1)
+    {
+        if (Currency!=null && Currency.FromCur !=null && Currency.ToCur!=null)
+        {
+            
+            <br />
+            <hr />
+            <div class="text-center">
+                @if (!string.IsNullOrEmpty(Currency.FromCur) && !string.IsNullOrEmpty(Currency.ToCur) && ConvertedCurrency.ConvertedValue != 0)
+                {
+                    
+                        <label style="font-size:1.5rem;font-weight:bold">1</label>
+                        <label class="badge badge-pill badge-primary text-lg-center" style="font-size:1.5rem">@(Currency.FromCur)</label>
+                        <label style="font-size:1.5rem;font-weight:bold">is equal to</label>
+                        <label class="badge badge-pill badge-success text-lg-center" style="font-size:1.5rem">@ConvertedCurrency.ConvertedValue</label>
+                        
+                        <label class="badge badge-pill badge-primary text-lg-center" style="font-size:1.5rem"> @(Currency.ToCur)</label>
+                                           }
+</div>
+            
+        }
+
+    }
+    else
+    {
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label for="name" class="badge badge-pill badge-danger" style="font-size:1.8rem">Kindly input correct currencies </label>
+            </div>
+        </div>
+    }
+
+</EditForm>
+
+
